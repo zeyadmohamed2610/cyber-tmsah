@@ -154,9 +154,7 @@ export const subjects: Subject[] = [
     icon: "🤝", 
     instructor: "د. نجلاء عبدالمحسن",
     articles: [
-      { id: "1", title: "المحاضرة الأولى - مقدمة في التفاوض", blogUrl: "#" },
-      { id: "2", title: "المحاضرة الثانية - استراتيجيات التفاوض", blogUrl: "#" },
-      { id: "3", title: "المحاضرة الثالثة - مهارات الإقناع", blogUrl: "#" },
+      { id: "1", title: "المحاضرة 1 -  أساسيات التفاوض واستراتيجيات النجاح  ", blogUrl: "https://cyber-tmsah.blogspot.com/2026/02/negotiation-skills-lecture-1.html" },
     ]
   },
   { 
