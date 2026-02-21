@@ -14,6 +14,8 @@ const Schedule = lazy(() => import("./pages/Schedule"));
 const Materials = lazy(() => import("./pages/Materials"));
 const SubjectDetail = lazy(() => import("./pages/SubjectDetail"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+// Attendance module is lazy-loaded to keep existing route loading behavior unchanged.
+const AttendancePage = lazy(() => import("./features/attendance/pages/AttendancePage"));
 
 const AppWrapper = ({ children }: { children: React.ReactNode }) => {
   usePerformanceMonitoring();
@@ -43,6 +45,8 @@ const App = () => (
                 <Route path="/schedule" element={<Schedule />} />
                 <Route path="/materials" element={<Materials />} />
                 <Route path="/materials/:id" element={<SubjectDetail />} />
+                {/* Added attendance route without changing Schedule or Subjects route behavior. */}
+                <Route path="/attendance" element={<AttendancePage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
