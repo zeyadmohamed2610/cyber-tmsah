@@ -8,14 +8,19 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import { LoadingScreen } from "@/components/Loading";
 import { Analytics } from "@/components/Analytics";
 import { usePerformanceMonitoring } from "@/hooks/use-performance";
+import { AttendanceAuthProvider } from "@/features/attendance/context/AttendanceAuthContext";
+import { AttendanceRoleGate } from "@/features/attendance/components/AttendanceRoleGate";
 
 const Index = lazy(() => import("./pages/Index"));
 const Schedule = lazy(() => import("./pages/Schedule"));
 const Materials = lazy(() => import("./pages/Materials"));
 const SubjectDetail = lazy(() => import("./pages/SubjectDetail"));
 const NotFound = lazy(() => import("./pages/NotFound"));
-// Attendance module is lazy-loaded to keep existing route loading behavior unchanged.
 const AttendancePage = lazy(() => import("./features/attendance/pages/AttendancePage"));
+const AttendanceLoginPage = lazy(() => import("./features/attendance/pages/AttendanceLoginPage"));
+const AttendanceOwnerPage = lazy(() => import("./features/attendance/pages/AttendanceOwnerPage"));
+const AttendanceDoctorPage = lazy(() => import("./features/attendance/pages/AttendanceDoctorPage"));
+const AttendanceStudentPage = lazy(() => import("./features/attendance/pages/AttendanceStudentPage"));
 
 const AppWrapper = ({ children }: { children: React.ReactNode }) => {
   usePerformanceMonitoring();
@@ -28,7 +33,7 @@ const App = () => (
       <ErrorBoundary>
         <TooltipProvider delayDuration={200}>
           <Toaster />
-          <Sonner 
+          <Sonner
             position="top-center"
             toastOptions={{
               style: {
@@ -37,20 +42,46 @@ const App = () => (
               },
             }}
           />
-          <BrowserRouter>
-            <Analytics />
-            <Suspense fallback={<LoadingScreen />}>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/schedule" element={<Schedule />} />
-                <Route path="/materials" element={<Materials />} />
-                <Route path="/materials/:id" element={<SubjectDetail />} />
-                {/* Added attendance route without changing Schedule or Subjects route behavior. */}
-                <Route path="/attendance" element={<AttendancePage />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
-          </BrowserRouter>
+          <AttendanceAuthProvider>
+            <BrowserRouter>
+              <Analytics />
+              <Suspense fallback={<LoadingScreen />}>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/schedule" element={<Schedule />} />
+                  <Route path="/materials" element={<Materials />} />
+                  <Route path="/materials/:id" element={<SubjectDetail />} />
+                  <Route path="/attendance/login" element={<AttendanceLoginPage />} />
+                  <Route path="/attendance" element={<AttendancePage />} />
+                  <Route
+                    path="/attendance/owner"
+                    element={
+                      <AttendanceRoleGate allowedRole="owner">
+                        <AttendanceOwnerPage />
+                      </AttendanceRoleGate>
+                    }
+                  />
+                  <Route
+                    path="/attendance/doctor"
+                    element={
+                      <AttendanceRoleGate allowedRole="doctor">
+                        <AttendanceDoctorPage />
+                      </AttendanceRoleGate>
+                    }
+                  />
+                  <Route
+                    path="/attendance/student"
+                    element={
+                      <AttendanceRoleGate allowedRole="student">
+                        <AttendanceStudentPage />
+                      </AttendanceRoleGate>
+                    }
+                  />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
+            </BrowserRouter>
+          </AttendanceAuthProvider>
         </TooltipProvider>
       </ErrorBoundary>
     </AppWrapper>

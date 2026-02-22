@@ -38,6 +38,7 @@ export interface AttendanceRecord {
   submittedAt: string;
   ipAddress?: string | null;
   deviceHash?: string | null;
+  recordedByOwner?: boolean;
 }
 
 export interface DashboardMetrics {
@@ -68,8 +69,11 @@ export interface AttendanceSubmissionInput {
   latitude: number;
   longitude: number;
   deviceHash: string;
+  deviceClass: "mobile" | "tablet" | "desktop" | "unknown";
   requestNonce: string;
   timeWindow: number;
+  userAgent: string;
+  deviceMemory: number | null;
 }
 
 export interface AttendanceSubmissionResult {

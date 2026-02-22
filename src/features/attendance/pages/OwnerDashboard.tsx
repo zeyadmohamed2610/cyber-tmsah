@@ -1,8 +1,12 @@
+import { useState } from "react";
 import { Activity, BookOpenCheck, Clock3, Users } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import { DataTable, type DataTableColumn } from "../components/DataTable";
 import { ExportButtons } from "../components/ExportButtons";
+import { attendanceService } from "../services/attendanceService";
 import { StatCard } from "../components/StatCard";
 import { AttendanceStatusChart } from "../components/charts/AttendanceStatusChart";
 import { AttendanceSubjectChart } from "../components/charts/AttendanceSubjectChart";
@@ -22,7 +26,42 @@ const getStatusVariant = (status: AttendanceRecord["status"]) => {
 };
 
 export const OwnerDashboard = () => {
+  const { toast } = useToast();
   const { loading, error, metrics, records, trendPoints, subjectMetrics } = useAttendanceDashboardData("owner");
+  const [overrideTargetId, setOverrideTargetId] = useState<string | null>(null);
+  const [ownerRecordedMap, setOwnerRecordedMap] = useState<Record<string, true>>({});
+
+  const isRecordedByOwner = (record: AttendanceRecord) => {
+    return Boolean(record.recordedByOwner || ownerRecordedMap[record.id]);
+  };
+
+  const handleOwnerOverride = async (attendanceId: string) => {
+    setOverrideTargetId(attendanceId);
+
+    const result = await attendanceService.recordOwnerAttendanceOverride(attendanceId);
+
+    if (result.error) {
+      toast({
+        variant: "destructive",
+        title: "Owner override failed",
+        description: result.error,
+      });
+      setOverrideTargetId(null);
+      return;
+    }
+
+    setOwnerRecordedMap((current) => ({
+      ...current,
+      [attendanceId]: true,
+    }));
+
+    toast({
+      title: "Owner override completed",
+      description: "The attendance record is now marked as Recorded by Owner.",
+    });
+
+    setOverrideTargetId(null);
+  };
 
   const columns: DataTableColumn<AttendanceRecord>[] = [
     {
@@ -44,6 +83,31 @@ export const OwnerDashboard = () => {
       id: "status",
       header: "Status",
       cell: (row) => <Badge variant={getStatusVariant(row.status)}>{row.status.toUpperCase()}</Badge>,
+    },
+    {
+      id: "source",
+      header: "Source",
+      cell: (row) =>
+        isRecordedByOwner(row) ? (
+          <Badge variant="secondary">Recorded by Owner</Badge>
+        ) : (
+          <Badge variant="outline">Standard</Badge>
+        ),
+    },
+    {
+      id: "owner-action",
+      header: "Owner Override",
+      cell: (row) => (
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          disabled={overrideTargetId === row.id}
+          onClick={() => void handleOwnerOverride(row.id)}
+        >
+          {overrideTargetId === row.id ? "Applying..." : "Manual Override"}
+        </Button>
+      ),
     },
   ];
 

@@ -25,6 +25,7 @@ type AttendanceRow = {
     subjects?: { name?: string | null } | Array<{ name?: string | null }> | null;
   } | null;
   users?: { full_name?: string | null } | Array<{ full_name?: string | null }> | null;
+  recorded_by_owner?: boolean | null;
 };
 
 type SessionRow = {
@@ -56,7 +57,7 @@ type EdgeSubmitAttendanceResponse = {
 const sessionSelect =
   "id, subject_id, doctor_id, starts_at, ends_at, room, latitude, longitude, geofence_radius_meters, status, subjects(name)";
 const attendanceSelect =
-  "id, session_id, student_id, status, submitted_at, ip_address, device_hash, sessions(subject_id, doctor_id, subjects(name)), users!attendance_student_id_fkey(full_name)";
+  "id, session_id, student_id, status, submitted_at, ip_address, device_hash, recorded_by_owner, sessions(subject_id, doctor_id, subjects(name)), users!attendance_student_id_fkey(full_name)";
 
 const ok = <T>(data: T): AttendanceApiResponse<T> => ({
   data,
@@ -183,6 +184,7 @@ const mapAttendanceRecord = (row: AttendanceRow): AttendanceRecord => {
     submittedAt: row.submitted_at,
     ipAddress: row.ip_address ?? null,
     deviceHash: row.device_hash ?? null,
+    recordedByOwner: Boolean(row.recorded_by_owner),
   };
 };
 
@@ -529,8 +531,11 @@ export const attendanceService = {
           latitude: payload.latitude,
           longitude: payload.longitude,
           device_hash: payload.deviceHash,
+          device_class: payload.deviceClass,
           request_nonce: payload.requestNonce,
           time_window: payload.timeWindow,
+          user_agent: payload.userAgent,
+          device_memory: payload.deviceMemory,
         },
       });
 
@@ -573,6 +578,33 @@ export const attendanceService = {
       });
     } catch (error) {
       return fail<AttendanceSubmissionResult>(operation, error);
+    }
+  },
+
+  async recordOwnerAttendanceOverride(
+    attendanceId: string,
+  ): Promise<AttendanceApiResponse<{ attendanceId: string; recordedByOwner: true }>> {
+    const operation = "attendanceService.recordOwnerAttendanceOverride";
+
+    try {
+      if (!attendanceId.trim()) {
+        throw new Error("attendanceId is required.");
+      }
+
+      const { error } = await supabase.rpc("rpc_owner_record_attendance_override", {
+        p_attendance_id: attendanceId,
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      return ok({
+        attendanceId,
+        recordedByOwner: true,
+      });
+    } catch (error) {
+      return fail(operation, error);
     }
   },
 };
