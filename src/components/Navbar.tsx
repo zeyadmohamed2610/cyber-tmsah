@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 const navLinks = [
   { label: "الجدول الدراسي", path: "/schedule" },
   { label: "المواد الدراسية", path: "/materials" },
+  { label: "الحضور", path: "/attendance" },
 ];
 
 const Navbar = () => {

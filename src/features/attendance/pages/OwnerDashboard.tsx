@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { DataTable, type DataTableColumn } from "../components/DataTable";
 import { ExportButtons } from "../components/ExportButtons";
@@ -22,6 +23,7 @@ import { StatCard } from "../components/StatCard";
 import { AttendanceStatusChart } from "../components/charts/AttendanceStatusChart";
 import { AttendanceSubjectChart } from "../components/charts/AttendanceSubjectChart";
 import { AttendanceTrendChart } from "../components/charts/AttendanceTrendChart";
+import { UserCreationForm } from "../components/UserCreationForm";
 import { useAttendanceDashboardData } from "../hooks/useAttendanceDashboardData";
 import type { AttendanceRecord } from "../types";
 import { formatDateTime } from "../utils/rotatingSession";
@@ -164,25 +166,49 @@ export const OwnerDashboard = () => {
         />
       </div>
 
-      <div className="grid gap-4 xl:grid-cols-2">
-        <AttendanceTrendChart points={trendPoints} />
-        <AttendanceStatusChart records={records} />
-      </div>
+      <Tabs defaultValue="overview" className="w-full">
+        <TabsList className="grid w-full max-w-md grid-cols-2">
+          <TabsTrigger value="overview">نظرة عامة</TabsTrigger>
+          <TabsTrigger value="users">إدارة المستخدمين</TabsTrigger>
+        </TabsList>
 
-      <OwnerLiveSessionMap sessions={sessions} records={records} />
+        <TabsContent value="overview" className="space-y-6">
+          <div className="grid gap-4 xl:grid-cols-2">
+            <AttendanceTrendChart points={trendPoints} />
+            <AttendanceStatusChart records={records} />
+          </div>
 
-      <AttendanceSubjectChart metrics={subjectMetrics} />
+          <OwnerLiveSessionMap sessions={sessions} records={records} />
 
-      <DataTable
-        title="Recent Attendance Events"
-        caption={loading ? "Loading..." : "Latest attendance submissions for governance visibility."}
-        columns={columns}
-        rows={records}
-        getRowId={(row) => row.id}
-        emptyMessage="No attendance events available."
-      />
+          <AttendanceSubjectChart metrics={subjectMetrics} />
 
-      <ExportButtons role="owner" />
+          <DataTable
+            title="Recent Attendance Events"
+            caption={loading ? "Loading..." : "Latest attendance submissions for governance visibility."}
+            columns={columns}
+            rows={records}
+            getRowId={(row) => row.id}
+            emptyMessage="No attendance events available."
+          />
+
+          <ExportButtons role="owner" />
+        </TabsContent>
+
+        <TabsContent value="users" className="space-y-6">
+          <div className="grid gap-6 lg:grid-cols-2">
+            <UserCreationForm />
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">ملاحظات</h3>
+              <Alert>
+                <AlertDescription>
+                  يمكن للمالك فقط إنشاء حسابات جديدة للدكاترة والطلاب.
+                  كلمة المرور يجب أن تكون 6 أحرف على الأقل.
+                </AlertDescription>
+              </Alert>
+            </div>
+          </div>
+        </TabsContent>
+      </Tabs>
 
       <AlertDialog
         open={Boolean(overrideCandidate)}

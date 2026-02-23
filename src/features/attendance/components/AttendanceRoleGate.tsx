@@ -3,7 +3,6 @@ import { Navigate, useLocation } from "react-router-dom";
 import { LoadingScreen } from "@/components/Loading";
 import type { AttendanceRole } from "../types";
 import { useAttendanceAuth } from "../context/AttendanceAuthContext";
-import AttendanceForbiddenPage from "../pages/AttendanceForbiddenPage";
 
 interface AttendanceRoleGateProps {
   allowedRole: AttendanceRole;
@@ -23,7 +22,7 @@ export const AttendanceRoleGate = ({ allowedRole, children }: AttendanceRoleGate
   }
 
   if (role !== allowedRole) {
-    return <AttendanceForbiddenPage />;
+    return <Navigate to="/attendance" replace />;
   }
 
   return <>{children}</>;

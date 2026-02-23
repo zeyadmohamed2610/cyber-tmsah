@@ -15,15 +15,15 @@ const AttendancePage = () => {
   }
 
   if (role === "owner") {
-    return <Navigate to="/attendance/owner" replace />;
+    return <Navigate to="/attendance/owner-dashboard" replace />;
   }
 
   if (role === "doctor") {
-    return <Navigate to="/attendance/doctor" replace />;
+    return <Navigate to="/attendance/doctor-dashboard" replace />;
   }
 
   if (role === "student") {
-    return <Navigate to="/attendance/student" replace />;
+    return <Navigate to="/attendance/student-panel" replace />;
   }
 
   return <AttendanceForbiddenPage />;

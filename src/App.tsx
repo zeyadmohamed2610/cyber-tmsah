@@ -54,7 +54,7 @@ const App = () => (
                   <Route path="/attendance/login" element={<AttendanceLoginPage />} />
                   <Route path="/attendance" element={<AttendancePage />} />
                   <Route
-                    path="/attendance/owner"
+                    path="/attendance/owner-dashboard"
                     element={
                       <AttendanceRoleGate allowedRole="owner">
                         <AttendanceOwnerPage />
@@ -62,7 +62,7 @@ const App = () => (
                     }
                   />
                   <Route
-                    path="/attendance/doctor"
+                    path="/attendance/doctor-dashboard"
                     element={
                       <AttendanceRoleGate allowedRole="doctor">
                         <AttendanceDoctorPage />
@@ -70,7 +70,7 @@ const App = () => (
                     }
                   />
                   <Route
-                    path="/attendance/student"
+                    path="/attendance/student-panel"
                     element={
                       <AttendanceRoleGate allowedRole="student">
                         <AttendanceStudentPage />
