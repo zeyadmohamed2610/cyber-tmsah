@@ -33,7 +33,7 @@ export const BackToTop = () => {
   return (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-6 left-6 z-50 p-3 rounded-full bg-primary text-primary-foreground shadow-lg hover:scale-110 transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+      className="fixed bottom-24 left-6 z-50 p-3 rounded-full bg-primary text-primary-foreground shadow-lg hover:scale-110 transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
       aria-label="العودة للأعلى"
       title="العودة للأعلى"
     >
