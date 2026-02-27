@@ -139,28 +139,28 @@ const sundayLectures: { [key: number]: Lecture[] } = {
   10: [], // إجازة
   11: [], // إجازة
   12: [
-    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
-    { time: timeSlots[1], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
-    { time: timeSlots[2], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف ميمي", room: "قاعة 201", type: "lecture" },
-    { time: timeSlots[3], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+    // الرسم الهندسي - م. دينا علي - G205 - الفترة 4
+    { time: timeSlots[3], subject: "رسم هندسي واسقاط", instructor: "م. دينا علي", room: "G205", type: "section" },
+    // الشبكات وتراسل البيانات - م. رضوي شعبان - D101 - الفترة 5
+    { time: timeSlots[4], subject: "شبكات وتراسل البيانات", instructor: "م. رضوي شعبان", room: "D101", type: "section" },
   ],
   13: [
-    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
-    { time: timeSlots[1], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
-    { time: timeSlots[2], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف ميمي", room: "قاعة 201", type: "lecture" },
-    { time: timeSlots[3], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+    // الرسم الهندسي - م. دينا علي - G205 - الفترة 3
+    { time: timeSlots[2], subject: "رسم هندسي واسقاط", instructor: "م. دينا علي", room: "G205", type: "section" },
+    // الشبكات وتراسل البيانات - م. رضوي شعبان - D101 - الفترة 2
+    { time: timeSlots[1], subject: "شبكات وتراسل البيانات", instructor: "م. رضوي شعبان", room: "D101", type: "section" },
   ],
   14: [
-    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
-    { time: timeSlots[1], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
-    { time: timeSlots[2], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف ميمي", room: "قاعة 201", type: "lecture" },
-    { time: timeSlots[3], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+    // الرسم الهندسي - م. دينا علي - G205 - الفترة 4
+    { time: timeSlots[3], subject: "رسم هندسي واسقاط", instructor: "م. دينا علي", room: "G205", type: "section" },
+    // الشبكات وتراسل البيانات - م. رضوي شعبان - D101 - الفترة 3
+    { time: timeSlots[2], subject: "شبكات وتراسل البيانات", instructor: "م. رضوي شعبان", room: "D101", type: "section" },
   ],
   15: [
-    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
-    { time: timeSlots[1], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
-    { time: timeSlots[2], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف ميمي", room: "قاعة 201", type: "lecture" },
-    { time: timeSlots[3], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+    // الرسم الهندسي - م. دينا علي - G205 - الفترة 3
+    { time: timeSlots[2], subject: "رسم هندسي واسقاط", instructor: "م. دينا علي", room: "G205", type: "section" },
+    // الشبكات وتراسل البيانات - م. رضوي شعبان - D101 - الفترة 4
+    { time: timeSlots[3], subject: "شبكات وتراسل البيانات", instructor: "م. رضوي شعبان", room: "D101", type: "section" },
   ],
 };
 

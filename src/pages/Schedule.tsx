@@ -266,7 +266,19 @@ const Schedule = () => {
 
                 {/* Lectures Grid or Holiday or Training */}
                 <div className="relative p-6">
-                  {day.isTraining ? (
+                  {day.lectures.length === 0 ? (
+                    <div className="flex items-center justify-center py-12 rounded-xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-dashed border-primary/30">
+                      <div className="text-center space-y-3">
+                        <div className="w-16 h-16 mx-auto rounded-2xl bg-primary/20 flex items-center justify-center animate-pulse">
+                          <span className="text-4xl">🎉</span>
+                        </div>
+                        <p className="text-xl font-bold text-primary drop-shadow-[0_0_10px_hsl(var(--primary)/0.5)]">
+                          إجازة
+                        </p>
+                        <p className="text-sm text-muted-foreground">استمتع بيومك!</p>
+                      </div>
+                    </div>
+                  ) : day.isTraining ? (
                     <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border-2 border-dashed border-primary/30">
                       <div className="relative flex flex-col items-center justify-center py-12 text-center space-y-4">
                         {/* Icon */}
@@ -282,18 +294,6 @@ const Schedule = () => {
                             {day.trainingMessage}
                           </p>
                         </div>
-                      </div>
-                    </div>
-                  ) : day.isHoliday ? (
-                    <div className="flex items-center justify-center py-12 rounded-xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-dashed border-primary/30">
-                      <div className="text-center space-y-3">
-                        <div className="w-16 h-16 mx-auto rounded-2xl bg-primary/20 flex items-center justify-center animate-pulse">
-                          <span className="text-4xl">🎉</span>
-                        </div>
-                        <p className="text-xl font-bold text-primary drop-shadow-[0_0_10px_hsl(var(--primary)/0.5)]">
-                          إجازة رسمية
-                        </p>
-                        <p className="text-sm text-muted-foreground">استمتع بيومك!</p>
                       </div>
                     </div>
                   ) : (
