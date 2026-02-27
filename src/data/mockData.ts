@@ -120,7 +120,10 @@ export const getTodaySchedule = (section?: string): DaySchedule | null => {
 export const getSectionSchedule = (section: string): DaySchedule[] => {
   const sectionNum = parseInt(section.replace(/\D/g, ''));
   
-  // Section-specific Saturday schedules
+  // Section-specific schedules
+  // Period 1: 09:00-09:40, Period 2: 09:45-10:25, Period 3: 10:30-11:10
+  // Period 4: 11:15-11:55, Period 5: 12:00-12:40, Period 6: 12:45-13:25
+  // Period 7: 13:30-14:10, Period 8: 14:15-14:55
   const saturdayBySection: { [key: number]: Lecture[] } = {
     1: [
       { time: timeSlots[0], subject: "نظم تشغيل - سكشن", instructor: "م. محمد حمدي", room: "A02", type: "section" },
