@@ -1,20 +1,23 @@
-import { useState, useRef, useCallback } from "react";
-import { Clock, MapPin, User, Calendar, GraduationCap, Sparkles, ChevronDown, Download, Image, FileText } from "lucide-react";
+import { useState, useRef, useCallback, useMemo } from "react";
+import { Clock, MapPin, User, Calendar, GraduationCap, Sparkles, ChevronDown, Download, Image, FileText, Moon } from "lucide-react";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import Layout from "@/components/Layout";
 import ScrollReveal from "@/components/ScrollReveal";
 import SEO from "@/components/SEO";
-import { sections, weekSchedule } from "@/data/mockData";
+import { sections, getSectionSchedule } from "@/data/mockData";
 
 const Schedule = () => {
   const [selectedSection, setSelectedSection] = useState(sections[0]);
   const [isExporting, setIsExporting] = useState(false);
   const scheduleRef = useRef<HTMLDivElement>(null);
 
-  // Count total lectures
-  const totalLectures = weekSchedule.reduce((acc, day) => 
-    acc + (day.isHoliday ? 0 : day.lectures.length), 0
+  // Get schedule for selected section
+  const currentSchedule = useMemo(() => getSectionSchedule(selectedSection), [selectedSection]);
+
+  // Count total lectures (excluding holidays and training days)
+  const totalLectures = currentSchedule.reduce((acc, day) => 
+    acc + (day.isHoliday || day.isTraining ? 0 : day.lectures.length), 0
   );
 
   const handleDownloadImage = useCallback(async () => {
@@ -100,10 +103,10 @@ const Schedule = () => {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
             {/* Title Section */}
             <div className="space-y-4">
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30">
-                <Sparkles className="h-4 w-4 text-primary" />
-                <span className="text-sm font-semibold text-primary">الفصل الدراسي الأول</span>
+              {/* Badge - Ramadan */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/30">
+                <Moon className="h-4 w-4 text-amber-500" />
+                <span className="text-sm font-semibold text-amber-500">رمضان 2026</span>
               </div>
 
               <h1 className="text-4xl md:text-5xl font-black text-foreground">
@@ -115,6 +118,9 @@ const Schedule = () => {
               
               <p className="text-lg text-muted-foreground max-w-md">
                 جميع محاضرات الأسبوع من السبت إلى الجمعة مع التفاصيل الكاملة
+              </p>
+              <p className="text-sm text-amber-500/80 font-medium">
+                ⏰ المواعيد الرمضانية (40 دقيقة محاضرة + 5 دقائق راحة)
               </p>
 
               {/* Stats */}
@@ -186,10 +192,30 @@ const Schedule = () => {
 
       {/* Schedule Grid */}
       <section className="section-container py-12 md:py-16" ref={scheduleRef}>
+        {/* Ramadan Banner */}
+        <div className="mb-8 p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-amber-600/5 to-amber-500/10 border border-amber-500/20">
+          <div className="flex items-center justify-center gap-3 text-amber-500">
+            <Moon className="h-5 w-5 animate-pulse" />
+            <span className="font-bold">المواعيد الرمضانية</span>
+            <span className="text-amber-500/70">|</span>
+            <span className="text-sm">40 دقيقة محاضرة + 5 دقائق راحة</span>
+          </div>
+        </div>
+        
         <div className="space-y-6">
-          {weekSchedule.map((day, di) => (
+          {currentSchedule.map((day, di) => (
             <ScrollReveal key={di}>
               <div className="group relative overflow-hidden rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/30 transition-all duration-500">
+                {/* Training Badge Corner */}
+                {day.isTraining && (
+                  <div className="absolute top-0 left-0 z-10">
+                    <div className="relative">
+                      <div className="absolute -top-1 -left-1 w-0 h-0 border-l-[40px] border-l-transparent border-t-[40px] border-t-amber-500" />
+                      <span className="absolute top-1 left-1 text-[8px] font-bold text-white rotate-45 -left-2">تدريب</span>
+                    </div>
+                  </div>
+                )}
+                
                 {/* Background Glow on Hover */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 
@@ -208,19 +234,31 @@ const Schedule = () => {
                   </div>
 
                   {/* Lecture Count Badge */}
-                  {!day.isHoliday && (
+                  {!day.isHoliday && !day.isTraining && (
                     <div className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/80 border border-border/50">
                       <GraduationCap className="h-4 w-4 text-primary" />
                       <span className="text-sm font-medium text-muted-foreground">
-                        {day.lectures.length} محاضرات
+                        {day.lectures.filter(l => l.type !== "section").length} محاضرات + {day.lectures.filter(l => l.type === "section").length} سكاشن
                       </span>
                     </div>
                   )}
                 </div>
 
-                {/* Lectures Grid or Holiday */}
+                {/* Lectures Grid or Holiday or Training */}
                 <div className="relative p-6">
-                  {day.isHoliday ? (
+                  {day.isTraining ? (
+                    <div className="flex items-center justify-center py-12 rounded-xl bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent border border-dashed border-amber-500/30">
+                      <div className="text-center space-y-3">
+                        <div className="w-16 h-16 mx-auto rounded-2xl bg-amber-500/20 flex items-center justify-center animate-pulse">
+                          <span className="text-4xl">🏋️</span>
+                        </div>
+                        <p className="text-xl font-bold text-amber-500 drop-shadow-[0_0_10px_hsl(45_100%_50%/0.5)]">
+                          تدريب
+                        </p>
+                        <p className="text-sm text-muted-foreground">{day.trainingMessage}</p>
+                      </div>
+                    </div>
+                  ) : day.isHoliday ? (
                     <div className="flex items-center justify-center py-12 rounded-xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-dashed border-primary/30">
                       <div className="text-center space-y-3">
                         <div className="w-16 h-16 mx-auto rounded-2xl bg-primary/20 flex items-center justify-center animate-pulse">
@@ -234,26 +272,45 @@ const Schedule = () => {
                     </div>
                   ) : (
                     <div className="space-y-3">
-                      {day.lectures.map((lecture, li) => (
+                      {day.lectures.map((lecture, li) => {
+                        const isSection = lecture.type === "section";
+                        return (
                         <div
                           key={li}
-                          className="group/card relative overflow-hidden rounded-xl bg-secondary/30 backdrop-blur-sm p-4 border border-border/50 transition-all duration-300 hover:border-primary/50 hover:bg-secondary/50"
+                          className={`group/card relative overflow-hidden rounded-xl backdrop-blur-sm p-4 border transition-all duration-300 hover:border-primary/50 ${
+                            isSection 
+                              ? "bg-cyan-500/10 border-cyan-500/30 hover:bg-cyan-500/20" 
+                              : "bg-secondary/30 border-border/50 hover:bg-secondary/50"
+                          }`}
                         >
                           <div className="flex flex-col md:flex-row md:items-center gap-4">
+                            {/* Type Badge */}
+                            <div className={`absolute top-2 left-2 px-2 py-0.5 rounded-md text-xs font-bold ${
+                              isSection 
+                                ? "bg-cyan-500/20 text-cyan-400" 
+                                : "bg-primary/20 text-primary"
+                            }`}>
+                              {isSection ? "سكشن" : "محاضرة"}
+                            </div>
+                            
                             {/* Time Badge */}
-                            <div className="flex items-center gap-3 md:min-w-[140px]">
-                              <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center">
-                                <Clock className="h-5 w-5 text-primary" />
+                            <div className="flex items-center gap-3 md:min-w-[140px] mt-4 md:mt-0">
+                              <div className={`w-10 h-10 rounded-xl border flex items-center justify-center ${
+                                isSection 
+                                  ? "bg-cyan-500/10 border-cyan-500/30" 
+                                  : "bg-primary/10 border-primary/30"
+                              }`}>
+                                <Clock className={`h-5 w-5 ${isSection ? "text-cyan-400" : "text-primary"}`} />
                               </div>
-                              <span className="text-base font-bold text-primary" dir="ltr">{lecture.time}</span>
+                              <span className={`text-base font-bold ${isSection ? "text-cyan-400" : "text-primary"}`} dir="ltr">{lecture.time}</span>
                             </div>
 
                             {/* Divider */}
                             <div className="hidden md:block w-px h-10 bg-border/50" />
                             
                             {/* Subject */}
-                            <div className="flex-1">
-                              <h3 className="font-bold text-foreground group-hover/card:text-primary transition-colors">
+                            <div className="flex-1 mt-4 md:mt-0">
+                              <h3 className={`font-bold group-hover/card:text-primary transition-colors ${isSection ? "text-cyan-400" : "text-foreground"}`}>
                                 {lecture.subject}
                               </h3>
                             </div>
@@ -275,7 +332,7 @@ const Schedule = () => {
                             </div>
                           </div>
                         </div>
-                      ))}
+                      )})}
                     </div>
                   )}
                 </div>

@@ -1,11 +1,12 @@
-// Sections from 1 to 10
-export const sections = Array.from({ length: 10 }, (_, i) => `سكشن ${i + 1}`);
+// Sections from 1 to 15
+export const sections = Array.from({ length: 15 }, (_, i) => `سكشن ${i + 1}`);
 
 export interface Lecture {
   time: string;
   subject: string;
   instructor: string;
   room: string;
+  type?: "lecture" | "section";
   isNext?: boolean;
 }
 
@@ -14,19 +15,21 @@ export interface DaySchedule {
   date: string;
   lectures: Lecture[];
   isHoliday?: boolean;
+  isTraining?: boolean;
+  trainingMessage?: string;
 }
 
 // Helper to generate time slots (8 periods, 1 hour each, 5 min break)
 // First period starts at 9:00 AM
 export const timeSlots = [
-  "09:00 - 10:00",
-  "10:05 - 11:05",
-  "11:10 - 12:10",
-  "12:15 - 13:15",
-  "13:20 - 14:20",
-  "14:25 - 15:25",
-  "15:30 - 16:30",
-  "16:35 - 17:35",
+  "09:00 - 09:40",
+  "09:45 - 10:25",
+  "10:30 - 11:10",
+  "11:15 - 11:55",
+  "12:00 - 12:40",
+  "12:45 - 13:25",
+  "13:30 - 14:10",
+  "14:15 - 14:55",
 ];
 
 // Get current week dates starting from Saturday
@@ -54,29 +57,27 @@ export const weekSchedule: DaySchedule[] = [
     day: "السبت",
     date: weekDates[0],
     lectures: [
-      { time: timeSlots[0], subject: "مهارات التفاوض", instructor: "د. نجلاء عبدالمحسن", room: "قاعة 101" },
-      { time: timeSlots[1], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1" },
-      { time: timeSlots[2], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203" },
+      { time: timeSlots[0], subject: "مهارات التفاوض", instructor: "د. نجلاء عبدالمحسن", room: "قاعة 101", type: "lecture" },
+      { time: timeSlots[1], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1", type: "lecture" },
+      { time: timeSlots[2], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203", type: "lecture" },
     ],
   },
   {
     day: "الأحد",
     date: weekDates[1],
     lectures: [
-      { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102" },
-      { time: timeSlots[1], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم" },
-      { time: timeSlots[2], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف ميمي", room: "قاعة 201" },
-      { time: timeSlots[3], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2" },
+      { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+      { time: timeSlots[1], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+      { time: timeSlots[2], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف ميمي", room: "قاعة 201", type: "lecture" },
+      { time: timeSlots[3], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
     ],
   },
   {
     day: "الاثنين",
     date: weekDates[2],
-    lectures: [
-      { time: timeSlots[0], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1" },
-      { time: timeSlots[1], subject: "مهارات التفاوض", instructor: "د. نجلاء عبدالمحسن", room: "قاعة 101" },
-      { time: timeSlots[2], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203" },
-    ],
+    lectures: [],
+    isTraining: true,
+    trainingMessage: "قريباً سيتم تزويد التفاصيل",
   },
   {
     day: "الثلاثاء",
@@ -88,18 +89,18 @@ export const weekSchedule: DaySchedule[] = [
     day: "الأربعاء",
     date: weekDates[4],
     lectures: [
-      { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102" },
-      { time: timeSlots[1], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2" },
-      { time: timeSlots[2], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم" },
-      { time: timeSlots[3], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف", room: "قاعة 201" },
+      { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+      { time: timeSlots[1], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+      { time: timeSlots[2], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+      { time: timeSlots[3], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف", room: "قاعة 201", type: "lecture" },
     ],
   },
   {
     day: "الخميس",
     date: weekDates[5],
     lectures: [
-      { time: timeSlots[0], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1" },
-      { time: timeSlots[1], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203" },
+      { time: timeSlots[0], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1", type: "lecture" },
+      { time: timeSlots[1], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203", type: "lecture" },
     ],
   },
   {
@@ -110,12 +111,20 @@ export const weekSchedule: DaySchedule[] = [
   },
 ];
 
-// Get today's schedule
-export const getTodaySchedule = (): DaySchedule | null => {
+// Get today's schedule (for all sections - default schedule)
+export const getTodaySchedule = (section?: string): DaySchedule | null => {
   const today = new Date();
   const dayNames = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
   const todayName = dayNames[today.getDay()];
-  return weekSchedule.find(d => d.day === todayName) || null;
+  const schedule = section ? getSectionSchedule(section) : weekSchedule;
+  return schedule.find(d => d.day === todayName) || null;
+};
+
+// Get schedule for a specific section
+export const getSectionSchedule = (section: string): DaySchedule[] => {
+  // For now, all sections share the same schedule
+  // You can customize this per section if needed
+  return weekSchedule;
 };
 
 export const getTodayName = (): string => {
@@ -137,6 +146,7 @@ export interface Subject {
   title: string;
   icon: string;
   instructor: string;
+  teachingAssistants?: string[];
   pdfUrl?: string;
   articles: Article[];
 }
@@ -182,6 +192,7 @@ export const subjects: Subject[] = [
     title: "شبكات وتراسل البيانات", 
     icon: "🌐", 
     instructor: "د. سيمون عزت",
+    teachingAssistants: ["لاء جمعه", "رضوي شعبان"],
     articles: [
       { id: "1", title: "المحاضرة 1 -  شرح كامل لنظم الأعداد في الحاسوب ", blogUrl: "https://cyber-tmsah.blogspot.com/2026/02/networks-data-communication-lecture-1-number-systems.html" },
     ]
@@ -190,7 +201,8 @@ export const subjects: Subject[] = [
     id: "engineering-drawing", 
     title: "رسم هندسي واسقاط", 
     icon: "📐", 
-    instructor: "د. محمد عثمان",
+    instructor: "د. محمد عثمان - د. حسين السيد",
+    teachingAssistants: ["دينا علي"],
     articles: [
       { id: "1", title: "المحاضرة الأولى - أساسيات الرسم الهندسي", blogUrl: "#" },
       { id: "2", title: "المحاضرة الثانية - الإسقاط العمودي", blogUrl: "#" },
@@ -213,6 +225,7 @@ export const subjects: Subject[] = [
     title: "نظم تشغيل", 
     icon: "⚙️", 
     instructor: "د. عبير حسن",
+    teachingAssistants: ["محمد حمدي", "كريم عادل"],
     articles: [
       { id: "1", title: "المحاضرة 1 - مفهوم نظام التشغيل ومكوناته وأنواعه بالتفصيل", blogUrl: "https://cyber-tmsah.blogspot.com/2026/02/operating-systems-lecture-1-basics.html" },
     ]

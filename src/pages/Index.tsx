@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Clock, MapPin, User, Calendar } from "lucide-react";
+import { ArrowLeft, Clock, MapPin, User, Calendar, Moon } from "lucide-react";
 import Layout from "@/components/Layout";
 import ScrollReveal from "@/components/ScrollReveal";
 import FounderCard from "@/components/FounderCard";
@@ -15,7 +15,7 @@ import { sections, getTodaySchedule, getTodayDate } from "@/data/mockData";
  */
 const Index = () => {
   const [selectedSection, setSelectedSection] = useState(sections[0]);
-  const todaySchedule = getTodaySchedule();
+  const todaySchedule = getTodaySchedule(selectedSection);
   const todayDate = getTodayDate();
   
   return (
@@ -96,7 +96,7 @@ const Index = () => {
                 <div className="text-xs md:text-sm text-muted-foreground mt-1">مواد دراسية</div>
               </div>
               <div className="text-center p-4 rounded-xl bg-card/50 backdrop-blur-sm border border-border/50">
-                <div className="text-2xl md:text-3xl font-black text-primary">10</div>
+                <div className="text-2xl md:text-3xl font-black text-primary">15</div>
                 <div className="text-xs md:text-sm text-muted-foreground mt-1">سكاشن</div>
               </div>
               <div className="text-center p-4 rounded-xl bg-card/50 backdrop-blur-sm border border-border/50">
@@ -152,7 +152,19 @@ const Index = () => {
           </div>
 
           {/* Schedule Content */}
-          {todaySchedule?.isHoliday ? <div className="relative rounded-2xl bg-gradient-to-br from-card to-card/50 p-10 text-center border border-border/50 overflow-hidden">
+          {todaySchedule?.isTraining ? (
+            <div className="relative rounded-2xl bg-gradient-to-br from-amber-500/10 to-amber-500/5 p-10 text-center border border-amber-500/30 overflow-hidden">
+              <div className="absolute inset-0 bg-amber-500/5" />
+              <div className="relative">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-amber-500/10 flex items-center justify-center">
+                  <span className="text-4xl">🏋️</span>
+                </div>
+                <h3 className="text-2xl font-bold text-amber-500 mb-2">يوم تدريب</h3>
+                <p className="text-muted-foreground">{todaySchedule.trainingMessage || "قريباً سيتم تزويد التفاصيل"}</p>
+              </div>
+            </div>
+          ) : todaySchedule?.isHoliday ? (
+            <div className="relative rounded-2xl bg-gradient-to-br from-card to-card/50 p-10 text-center border border-border/50 overflow-hidden">
               <div className="absolute inset-0 bg-primary/5" />
               <div className="relative">
                 <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center">
@@ -161,7 +173,9 @@ const Index = () => {
                 <h3 className="text-2xl font-bold text-foreground mb-2">يوم إجازة!</h3>
                 <p className="text-muted-foreground">استمتع بوقتك، لا توجد محاضرات اليوم</p>
               </div>
-            </div> : todaySchedule?.lectures && todaySchedule.lectures.length > 0 ? <div className="grid gap-4">
+            </div>
+          ) : todaySchedule?.lectures && todaySchedule.lectures.length > 0 ? (
+            <div className="grid gap-4">
               {todaySchedule.lectures.map((lecture, i) => {
             return <div key={i} className="group relative rounded-2xl p-5 md:p-6 transition-all duration-300 overflow-hidden bg-card border border-border/50 hover:border-primary/30 hover:bg-card/80">
                     <div className="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-6">
@@ -209,12 +223,15 @@ const Index = () => {
                     </div>
                   </div>;
           })}
-            </div> : <div className="rounded-2xl bg-card border border-border/50 p-10 text-center">
+            </div>
+          ) : (
+            <div className="rounded-2xl bg-card border border-border/50 p-10 text-center">
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center">
                 <Calendar className="h-7 w-7 text-muted-foreground" />
               </div>
               <p className="text-lg font-medium text-muted-foreground">لا توجد محاضرات مسجلة لهذا اليوم</p>
-            </div>}
+            </div>
+          )}
 
           {/* View Full Schedule Link */}
           <div className="mt-8 text-center">

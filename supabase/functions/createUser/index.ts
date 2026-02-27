@@ -8,14 +8,22 @@ type CreateUserPayload = {
   role: "doctor" | "student";
 };
 
-const createJsonResponse = (status: number, payload: Record<string, unknown>) => {
-  return new Response(JSON.stringify(payload), {
-    status,
-    headers: {
-      "Content-Type": "application/json",
-      "Cache-Control": "no-store",
-    },
+// Helper to add CORS headers for Edge Functions
+const createJsonResponse = (
+  status: number,
+  payload: Record<string, unknown>,
+  origin: string | null
+) => {
+  const headers = new Headers({
+    "Content-Type": "application/json",
+    "Cache-Control": "no-store",
   });
+  if (origin) {
+    headers.set("Access-Control-Allow-Origin", origin);
+    headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+    headers.set("Access-Control-Allow-Headers", "Authorization, Content-Type");
+  }
+  return new Response(JSON.stringify(payload), { status, headers });
 };
 
 const isValidPayload = (payload: unknown): payload is CreateUserPayload => {
@@ -35,8 +43,18 @@ const isValidPayload = (payload: unknown): payload is CreateUserPayload => {
 };
 
 serve(async (request) => {
+  const origin = request.headers.get("origin") ?? null;
+  if (request.method === "OPTIONS") {
+    // Preflight CORS request
+    const respHeaders = new Headers({
+      "Access-Control-Allow-Origin": origin ?? "*",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Authorization, Content-Type",
+    });
+    return new Response(null, { status: 204, headers: respHeaders });
+  }
   if (request.method !== "POST") {
-    return createJsonResponse(405, { error: "Method not allowed. Use POST." });
+    return createJsonResponse(405, { error: "Method not allowed. Use POST." }, origin);
   }
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
@@ -50,7 +68,7 @@ serve(async (request) => {
 
   const authorization = request.headers.get("authorization");
   if (!authorization?.startsWith("Bearer ")) {
-    return createJsonResponse(401, { error: "Missing bearer token." });
+    return createJsonResponse(401, { error: "Missing bearer token." }, origin);
   }
 
   const jwt = authorization.replace("Bearer ", "").trim();
@@ -61,7 +79,7 @@ serve(async (request) => {
 
   const { data: authData, error: authError } = await supabaseAdmin.auth.getUser(jwt);
   if (authError || !authData.user) {
-    return createJsonResponse(401, { error: "Invalid JWT token." });
+    return createJsonResponse(401, { error: "Invalid JWT token." }, origin);
   }
 
   const callerId = authData.user.id;
@@ -77,18 +95,18 @@ serve(async (request) => {
   }
 
   if (!callerData || callerData.role !== "owner") {
-    return createJsonResponse(403, { error: "Only owners can create new users." });
+    return createJsonResponse(403, { error: "Only owners can create new users." }, origin);
   }
 
   let body: CreateUserPayload;
   try {
     body = await request.json();
   } catch {
-    return createJsonResponse(400, { error: "Invalid JSON body." });
+    return createJsonResponse(400, { error: "Invalid JSON body." }, origin);
   }
 
   if (!isValidPayload(body)) {
-    return createJsonResponse(400, { error: "Invalid payload. Required: name (string), email (string), password (min 6 chars), role (doctor|student)." });
+    return createJsonResponse(400, { error: "Invalid payload. Required: name (string), email (string), password (min 6 chars), role (doctor|student)." }, origin);
   }
 
   const { data: existingUser } = await supabaseAdmin
@@ -98,7 +116,7 @@ serve(async (request) => {
     .maybeSingle();
 
   if (existingUser) {
-    return createJsonResponse(409, { error: "A user with this email already exists." });
+    return createJsonResponse(409, { error: "A user with this email already exists." }, origin);
   }
 
   const { data: newAuthUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
@@ -108,11 +126,11 @@ serve(async (request) => {
   });
 
   if (createError) {
-    return createJsonResponse(500, { error: "Failed to create auth user.", details: createError.message });
+    return createJsonResponse(500, { error: "Failed to create auth user.", details: createError.message }, origin);
   }
 
   if (!newAuthUser.user) {
-    return createJsonResponse(500, { error: "Failed to create auth user. No user returned." });
+    return createJsonResponse(500, { error: "Failed to create auth user. No user returned." }, origin);
   }
 
   const newUserId = newAuthUser.user.id;
@@ -126,7 +144,7 @@ serve(async (request) => {
 
   if (insertError) {
     await supabaseAdmin.auth.admin.deleteUser(newUserId);
-    return createJsonResponse(500, { error: "Failed to create user record.", details: insertError.message });
+    return createJsonResponse(500, { error: "Failed to create user record.", details: insertError.message }, origin);
   }
 
   await supabaseAdmin.from("system_logs").insert({
@@ -148,5 +166,5 @@ serve(async (request) => {
       email: body.email.trim().toLowerCase(),
       role: body.role,
     },
-  });
+  }, origin);
 });
