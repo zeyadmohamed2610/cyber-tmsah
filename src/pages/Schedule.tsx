@@ -5,15 +5,26 @@ import { jsPDF } from "jspdf";
 import Layout from "@/components/Layout";
 import ScrollReveal from "@/components/ScrollReveal";
 import SEO from "@/components/SEO";
-import { sections, getSectionSchedule } from "@/data/mockData";
+import { sections, getSectionSchedule, timeSlots } from "@/data/mockData";
 
 const Schedule = () => {
   const [selectedSection, setSelectedSection] = useState(sections[0]);
   const [isExporting, setIsExporting] = useState(false);
   const scheduleRef = useRef<HTMLDivElement>(null);
 
-  // Get schedule for selected section
-  const currentSchedule = useMemo(() => getSectionSchedule(selectedSection), [selectedSection]);
+  // Get schedule for selected section and sort lectures by time
+  const currentSchedule = useMemo(() => {
+    const schedule = getSectionSchedule(selectedSection);
+    return schedule.map(day => ({
+      ...day,
+      // Sort lectures by time slot index (first period to last)
+      lectures: [...day.lectures].sort((a, b) => {
+        const timeA = timeSlots.indexOf(a.time);
+        const timeB = timeSlots.indexOf(b.time);
+        return timeA - timeB;
+      })
+    }));
+  }, [selectedSection]);
 
   // Count total lectures and sections (excluding holidays and training days)
   const { totalLectures, totalSections } = currentSchedule.reduce(
