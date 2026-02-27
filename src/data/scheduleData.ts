@@ -125,30 +125,205 @@ const saturdayLectures: { [key: number]: Lecture[] } = {
   ],
 };
 
-// Sunday - Same for all sections
-const sundayLectures: Lecture[] = [
-  { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
-  { time: timeSlots[1], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
-  { time: timeSlots[2], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف ميمي", room: "قاعة 201", type: "lecture" },
-  { time: timeSlots[3], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
-];
+// Sunday - Section-specific (only sections 12, 13, 14, 15 have attendance)
+const sundayLectures: { [key: number]: Lecture[] } = {
+  1: [], // إجازة
+  2: [], // إجازة
+  3: [], // إجازة
+  4: [], // إجازة
+  5: [], // إجازة
+  6: [], // إجازة
+  7: [], // إجازة
+  8: [], // إجازة
+  9: [], // إجازة
+  10: [], // إجازة
+  11: [], // إجازة
+  12: [
+    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+    { time: timeSlots[1], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+    { time: timeSlots[2], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف ميمي", room: "قاعة 201", type: "lecture" },
+    { time: timeSlots[3], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+  ],
+  13: [
+    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+    { time: timeSlots[1], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+    { time: timeSlots[2], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف ميمي", room: "قاعة 201", type: "lecture" },
+    { time: timeSlots[3], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+  ],
+  14: [
+    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+    { time: timeSlots[1], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+    { time: timeSlots[2], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف ميمي", room: "قاعة 201", type: "lecture" },
+    { time: timeSlots[3], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+  ],
+  15: [
+    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+    { time: timeSlots[1], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+    { time: timeSlots[2], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف ميمي", room: "قاعة 201", type: "lecture" },
+    { time: timeSlots[3], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+  ],
+};
 
-// Tuesday - Same as Sunday
-const tuesdayLectures: Lecture[] = [...sundayLectures];
+// Tuesday - Section-specific (same as Sunday)
+const tuesdayLectures: { [key: number]: Lecture[] } = { ...sundayLectures };
 
-// Wednesday
-const wednesdayLectures: Lecture[] = [
-  { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
-  { time: timeSlots[1], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
-  { time: timeSlots[2], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
-  { time: timeSlots[3], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف", room: "قاعة 201", type: "lecture" },
-];
+// Wednesday - Section-specific
+const wednesdayLectures: { [key: number]: Lecture[] } = {
+  1: [
+    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+    { time: timeSlots[1], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+    { time: timeSlots[2], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+    { time: timeSlots[3], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف", room: "قاعة 201", type: "lecture" },
+  ],
+  2: [
+    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+    { time: timeSlots[1], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+    { time: timeSlots[2], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+    { time: timeSlots[3], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف", room: "قاعة 201", type: "lecture" },
+  ],
+  3: [
+    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+    { time: timeSlots[1], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+    { time: timeSlots[2], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+    { time: timeSlots[3], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف", room: "قاعة 201", type: "lecture" },
+  ],
+  4: [
+    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+    { time: timeSlots[1], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+    { time: timeSlots[2], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+    { time: timeSlots[3], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف", room: "قاعة 201", type: "lecture" },
+  ],
+  5: [
+    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+    { time: timeSlots[1], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+    { time: timeSlots[2], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+    { time: timeSlots[3], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف", room: "قاعة 201", type: "lecture" },
+  ],
+  6: [
+    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+    { time: timeSlots[1], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+    { time: timeSlots[2], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+    { time: timeSlots[3], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف", room: "قاعة 201", type: "lecture" },
+  ],
+  7: [
+    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+    { time: timeSlots[1], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+    { time: timeSlots[2], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+    { time: timeSlots[3], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف", room: "قاعة 201", type: "lecture" },
+  ],
+  8: [
+    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+    { time: timeSlots[1], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+    { time: timeSlots[2], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+    { time: timeSlots[3], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف", room: "قاعة 201", type: "lecture" },
+  ],
+  9: [
+    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+    { time: timeSlots[1], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+    { time: timeSlots[2], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+    { time: timeSlots[3], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف", room: "قاعة 201", type: "lecture" },
+  ],
+  10: [
+    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+    { time: timeSlots[1], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+    { time: timeSlots[2], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+    { time: timeSlots[3], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف", room: "قاعة 201", type: "lecture" },
+  ],
+  11: [
+    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+    { time: timeSlots[1], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+    { time: timeSlots[2], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+    { time: timeSlots[3], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف", room: "قاعة 201", type: "lecture" },
+  ],
+  12: [
+    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+    { time: timeSlots[1], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+    { time: timeSlots[2], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+    { time: timeSlots[3], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف", room: "قاعة 201", type: "lecture" },
+  ],
+  13: [
+    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+    { time: timeSlots[1], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+    { time: timeSlots[2], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+    { time: timeSlots[3], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف", room: "قاعة 201", type: "lecture" },
+  ],
+  14: [
+    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+    { time: timeSlots[1], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+    { time: timeSlots[2], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+    { time: timeSlots[3], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف", room: "قاعة 201", type: "lecture" },
+  ],
+  15: [
+    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+    { time: timeSlots[1], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+    { time: timeSlots[2], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+    { time: timeSlots[3], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف", room: "قاعة 201", type: "lecture" },
+  ],
+};
 
-// Thursday
-const thursdayLectures: Lecture[] = [
-  { time: timeSlots[0], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1", type: "lecture" },
-  { time: timeSlots[1], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203", type: "lecture" },
-];
+// Thursday - Section-specific
+const thursdayLectures: { [key: number]: Lecture[] } = {
+  1: [
+    { time: timeSlots[0], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1", type: "lecture" },
+    { time: timeSlots[1], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203", type: "lecture" },
+  ],
+  2: [
+    { time: timeSlots[0], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1", type: "lecture" },
+    { time: timeSlots[1], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203", type: "lecture" },
+  ],
+  3: [
+    { time: timeSlots[0], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1", type: "lecture" },
+    { time: timeSlots[1], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203", type: "lecture" },
+  ],
+  4: [
+    { time: timeSlots[0], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1", type: "lecture" },
+    { time: timeSlots[1], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203", type: "lecture" },
+  ],
+  5: [
+    { time: timeSlots[0], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1", type: "lecture" },
+    { time: timeSlots[1], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203", type: "lecture" },
+  ],
+  6: [
+    { time: timeSlots[0], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1", type: "lecture" },
+    { time: timeSlots[1], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203", type: "lecture" },
+  ],
+  7: [
+    { time: timeSlots[0], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1", type: "lecture" },
+    { time: timeSlots[1], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203", type: "lecture" },
+  ],
+  8: [
+    { time: timeSlots[0], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1", type: "lecture" },
+    { time: timeSlots[1], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203", type: "lecture" },
+  ],
+  9: [
+    { time: timeSlots[0], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1", type: "lecture" },
+    { time: timeSlots[1], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203", type: "lecture" },
+  ],
+  10: [
+    { time: timeSlots[0], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1", type: "lecture" },
+    { time: timeSlots[1], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203", type: "lecture" },
+  ],
+  11: [
+    { time: timeSlots[0], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1", type: "lecture" },
+    { time: timeSlots[1], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203", type: "lecture" },
+  ],
+  12: [
+    { time: timeSlots[0], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1", type: "lecture" },
+    { time: timeSlots[1], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203", type: "lecture" },
+  ],
+  13: [
+    { time: timeSlots[0], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1", type: "lecture" },
+    { time: timeSlots[1], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203", type: "lecture" },
+  ],
+  14: [
+    { time: timeSlots[0], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1", type: "lecture" },
+    { time: timeSlots[1], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203", type: "lecture" },
+  ],
+  15: [
+    { time: timeSlots[0], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1", type: "lecture" },
+    { time: timeSlots[1], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203", type: "lecture" },
+  ],
+};
 
 // ============================================
 // 🔧 FUNCTIONS
@@ -171,11 +346,11 @@ export const getSectionSchedule = (section: string): DaySchedule[] => {
   
   return [
     { day: "السبت", date: weekDates[0], lectures: saturdayLectures[sectionNum] || [] },
-    { day: "الأحد", date: weekDates[1], lectures: sundayLectures },
+    { day: "الأحد", date: weekDates[1], lectures: sundayLectures[sectionNum] || [] },
     { day: "الاثنين", date: weekDates[2], lectures: [], isTraining: true, trainingMessage: "قريباً سيتم تزويد التفاصيل" },
-    { day: "الثلاثاء", date: weekDates[3], lectures: tuesdayLectures },
-    { day: "الأربعاء", date: weekDates[4], lectures: wednesdayLectures },
-    { day: "الخميس", date: weekDates[5], lectures: thursdayLectures },
+    { day: "الثلاثاء", date: weekDates[3], lectures: tuesdayLectures[sectionNum] || [] },
+    { day: "الأربعاء", date: weekDates[4], lectures: wednesdayLectures[sectionNum] || [] },
+    { day: "الخميس", date: weekDates[5], lectures: thursdayLectures[sectionNum] || [] },
     { day: "الجمعة", date: weekDates[6], lectures: [], isHoliday: true },
   ];
 };
