@@ -52,11 +52,7 @@ export const weekSchedule: DaySchedule[] = [
   {
     day: "السبت",
     date: weekDates[0],
-    lectures: [
-      { time: timeSlots[0], subject: "مهارات التفاوض", instructor: "د. نجلاء عبدالمحسن", room: "قاعة 101", type: "lecture" },
-      { time: timeSlots[1], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1", type: "lecture" },
-      { time: timeSlots[2], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203", type: "lecture" },
-    ],
+    lectures: [], // Will be replaced by section-specific schedule
   },
   {
     day: "الأحد",
@@ -124,7 +120,8 @@ export const getSectionSchedule = (section: string): DaySchedule[] => {
   // Period 1: 09:00-09:40, Period 2: 09:45-10:25, Period 3: 10:30-11:10
   // Period 4: 11:15-11:55, Period 5: 12:00-12:40, Period 6: 12:45-13:25
   // Period 7: 13:30-14:10, Period 8: 14:15-14:55
-  const saturdayBySection: { [key: number]: Lecture[] } = {
+  
+  const saturdayLectures: { [key: number]: Lecture[] } = {
     1: [
       { time: timeSlots[0], subject: "نظم تشغيل - سكشن", instructor: "م. محمد حمدي", room: "A02", type: "section" },
       { time: timeSlots[2], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "G201", type: "lecture" },
@@ -135,16 +132,33 @@ export const getSectionSchedule = (section: string): DaySchedule[] => {
     ],
   };
   
-  const saturdayLectures = saturdayBySection[sectionNum] || weekSchedule[0].lectures;
+  const sundayLectures: Lecture[] = [
+    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+    { time: timeSlots[1], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+    { time: timeSlots[2], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف ميمي", room: "قاعة 201", type: "lecture" },
+    { time: timeSlots[3], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+  ];
+  
+  const wednesdayLectures: Lecture[] = [
+    { time: timeSlots[0], subject: "لغة انجليزية", instructor: "د. صابرين", room: "قاعة 102", type: "lecture" },
+    { time: timeSlots[1], subject: "نظم تشغيل", instructor: "د. عبير حسن", room: "معمل 2", type: "lecture" },
+    { time: timeSlots[2], subject: "رسم هندسي واسقاط", instructor: "د. محمد عثمان", room: "معمل الرسم", type: "lecture" },
+    { time: timeSlots[3], subject: "مبادئ تكنولوجيا", instructor: "د. أشرف", room: "قاعة 201", type: "lecture" },
+  ];
+  
+  const thursdayLectures: Lecture[] = [
+    { time: timeSlots[0], subject: "مبادئ الأمن السيبراني", instructor: "د. سامح مصطفى", room: "معمل 1", type: "lecture" },
+    { time: timeSlots[1], subject: "شبكات وتراسل البيانات", instructor: "د. سيمون عزت", room: "قاعة 203", type: "lecture" },
+  ];
   
   return [
-    { ...weekSchedule[0], lectures: saturdayLectures },
-    weekSchedule[1],
-    weekSchedule[2],
-    weekSchedule[3],
-    weekSchedule[4],
-    weekSchedule[5],
-    weekSchedule[6],
+    { day: "السبت", date: weekDates[0], lectures: saturdayLectures[sectionNum] || [] },
+    { day: "الأحد", date: weekDates[1], lectures: sundayLectures },
+    { day: "الاثنين", date: weekDates[2], lectures: [], isTraining: true, trainingMessage: "قريباً سيتم تزويد التفاصيل" },
+    { day: "الثلاثاء", date: weekDates[3], lectures: [], isHoliday: true },
+    { day: "الأربعاء", date: weekDates[4], lectures: wednesdayLectures },
+    { day: "الخميس", date: weekDates[5], lectures: thursdayLectures },
+    { day: "الجمعة", date: weekDates[6], lectures: [], isHoliday: true },
   ];
 };
 
